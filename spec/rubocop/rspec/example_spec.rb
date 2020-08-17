@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::RSpec::Example do
+RSpec.describe RuboCop::RSpec::Example, :config do
   include RuboCop::AST::Sexp
 
+  let(:cop_class) { RuboCop::Cop::RSpec::Base }
+  let(:language_config) { cop.send(:rspec_language_config) }
+
   def example(source)
-    described_class.new(parse_source(source).ast)
+    described_class.new(parse_source(source).ast, language_config)
   end
 
   it 'extracts doc string' do
@@ -48,7 +51,7 @@ RSpec.describe RuboCop::RSpec::Example do
 
   it 'returns node' do
     node = s(:sym, :node)
-    expect(described_class.new(node).to_node).to be(node)
+    expect(described_class.new(node, language_config).to_node).to be(node)
   end
 
   describe 'value object semantics' do
@@ -70,7 +73,7 @@ RSpec.describe RuboCop::RSpec::Example do
     it 'computes #hash based on class and node' do
       node = s(:node)
 
-      expect(described_class.new(node).hash)
+      expect(described_class.new(node, language_config).hash)
         .to eql([described_class, node].hash)
     end
   end

@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::RSpec::Hook do
+RSpec.describe RuboCop::RSpec::Hook, :config do
   include RuboCop::AST::Sexp
 
+  let(:cop_class) { RuboCop::Cop::RSpec::Base }
+  let(:language_config) { cop.send(:rspec_language_config) }
+
   def hook(source)
-    described_class.new(parse_source(source).ast)
+    described_class.new(parse_source(source).ast, language_config)
   end
 
   it 'extracts name' do

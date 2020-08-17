@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::RSpec::ExampleGroup do
+RSpec.describe RuboCop::RSpec::ExampleGroup, :config do
   include RuboCop::AST::Sexp
 
-  subject(:group) { described_class.new(parse_source(source).ast) }
+  subject(:group) do
+    described_class.new(parse_source(source).ast, language_config)
+  end
+
+  let(:cop_class) { RuboCop::Cop::RSpec::Base }
+  let(:language_config) { cop.send(:rspec_language_config) }
 
   let(:source) do
     <<-RUBY
@@ -35,7 +40,7 @@ RSpec.describe RuboCop::RSpec::ExampleGroup do
         s(:send, nil, :it,
           s(:str, 'does y')),
         s(:args), s(:send, nil, :y))
-    ].map { |node| RuboCop::RSpec::Example.new(node) }
+    ].map { |node| RuboCop::RSpec::Example.new(node, language_config) }
   end
 
   it 'exposes examples in scope' do
