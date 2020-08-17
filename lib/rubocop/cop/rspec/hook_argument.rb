@@ -64,13 +64,11 @@ module RuboCop
         IMPLICIT_MSG = 'Omit the default `%<scope>p` argument for RSpec hooks.'
         EXPLICIT_MSG = 'Use `%<scope>p` for RSpec hooks.'
 
-        def_node_matcher :hook?, Hooks::ALL.node_pattern_union
-
-        def_node_matcher :scoped_hook, <<-PATTERN
-          (block $(send _ #hook? (sym ${:each :example})) ...)
+        def_node_matcher :scoped_block, <<-PATTERN
+          (block $(send _ #rspec_hooks (sym ${:each :example})) ...)
         PATTERN
 
-        def_node_matcher :unscoped_hook, '(block $(send _ #hook?) ...)'
+        def_node_matcher :unscoped_block, '(block $(send _ #rspec_hooks) ...)'
 
         def on_block(node)
           hook(node) do |method_send, scope_name|
@@ -112,7 +110,7 @@ module RuboCop
         end
 
         def hook(node, &block)
-          scoped_hook(node, &block) || unscoped_hook(node, &block)
+          scoped_block(node, &block) || unscoped_block(node, &block)
         end
 
         def argument_range(send_node)

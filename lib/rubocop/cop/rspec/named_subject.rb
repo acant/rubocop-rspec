@@ -45,21 +45,18 @@ module RuboCop
         MSG = 'Name your test subject if you need '\
               'to reference it explicitly.'
 
-        def_node_matcher :rspec_block?, <<-PATTERN
-          {
-            #{Examples::ALL.block_pattern}
-            #{Hooks::ALL.block_pattern}
-          }
-        PATTERN
+        def_node_matcher :example_or_hook_block?,
+                         block_pattern('{#rspec_all_examples #rspec_hooks}')
 
-        def_node_matcher :shared_example?, <<-PATTERN
-          #{SharedGroups::EXAMPLES.block_pattern}
-        PATTERN
+        def_node_matcher :shared_example?,
+                         block_pattern('#rspec_example_shared_groups')
 
         def_node_search :subject_usage, '$(send nil? :subject)'
 
         def on_block(node)
-          return if !rspec_block?(node) || ignored_shared_example?(node)
+          if !example_or_hook_block?(node) || ignored_shared_example?(node)
+            return
+          end
 
           subject_usage(node) do |subject_node|
             add_offense(subject_node.loc.selector)

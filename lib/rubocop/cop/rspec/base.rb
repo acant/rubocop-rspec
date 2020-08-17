@@ -18,6 +18,7 @@ module RuboCop
       #   #     - '_test.rb$'
       #   #     - '(?:^|/)test/'
       class Base < ::RuboCop::Cop::Base
+        extend RuboCop::RSpec::Language
         include RuboCop::RSpec::Language
         include RuboCop::RSpec::Language::NodePattern
 

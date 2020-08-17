@@ -30,8 +30,8 @@ module RuboCop
 
         def_node_matcher :example_or_group?, <<-PATTERN
           {
-            #{(Examples::ALL + ExampleGroups::ALL).block_pattern}
-            #{Includes::EXAMPLES.send_pattern}
+            #{block_pattern('{#rspec_all_example_groups #rspec_all_examples}')}
+            #{send_pattern('#rspec_example_includes')}
           }
         PATTERN
 

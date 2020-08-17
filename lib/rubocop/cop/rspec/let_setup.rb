@@ -29,10 +29,11 @@ module RuboCop
         MSG = 'Do not use `let!` to setup objects not referenced in tests.'
 
         def_node_matcher :example_or_shared_group_or_including?,
-                         (
-                           ExampleGroups::ALL + SharedGroups::ALL +
-                           Includes::ALL
-                         ).block_pattern
+                         block_pattern(
+                           '{#rspec_all_shared_groups '\
+                           '#rspec_all_example_groups '\
+                           '#rspec_all_includes}'
+                         )
 
         def_node_matcher :let_bang, <<-PATTERN
           {

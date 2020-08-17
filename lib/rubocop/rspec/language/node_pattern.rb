@@ -6,30 +6,42 @@ module RuboCop
       # Common node matchers used for matching against the rspec DSL
       module NodePattern
         extend RuboCop::NodePattern::Macros
+        extend RuboCop::RSpec::Language
         include RuboCop::RSpec::Language::Config
 
         def_node_matcher :rspec?, '{(const {nil? cbase} :RSpec) nil?}'
 
-        def_node_matcher :example_group?, ExampleGroups::ALL.block_pattern
-        def_node_matcher :shared_group?, SharedGroups::ALL.block_pattern
+        def_node_matcher :example_group?,
+                         block_pattern('#rspec_all_example_groups')
 
-        spec_groups = ExampleGroups::ALL + SharedGroups::ALL
-        def_node_matcher :spec_group?, spec_groups.block_pattern
+        def_node_matcher :shared_group?,
+                         block_pattern('#rspec_all_shared_groups')
+
+        def_node_matcher :spec_group?,
+                         block_pattern(
+                           '{#rspec_all_shared_groups '\
+                           '#rspec_all_example_groups}'
+                         )
 
         def_node_matcher :example_group_with_body?, <<-PATTERN
-          (block #{ExampleGroups::ALL.send_pattern} args !nil?)
+          (block #{send_pattern('#rspec_all_example_groups')} args !nil?)
         PATTERN
 
-        def_node_matcher :example?, Examples::ALL.block_pattern
+        def_node_matcher :example?, block_pattern('#rspec_all_examples')
 
-        def_node_matcher :hook?, Hooks::ALL.block_pattern
+        def_node_matcher :hook?, block_pattern('#rspec_hooks')
 
-        def_node_matcher :let?, Helpers::ALL.block_or_block_pass_pattern
+        def_node_matcher :let?, <<-PATTERN
+          {#{block_pattern('#rspec_helpers')}
+          (send #rspec? #rspec_helpers _ block_pass)}
+        PATTERN
 
-        def_node_matcher :include?,
-                         Includes::ALL.send_or_block_or_block_pass_pattern
+        def_node_matcher :include?, <<-PATTERN
+          {#{send_pattern('#rspec_all_includes')}
+          #{block_pattern('#rspec_all_includes')}}
+        PATTERN
 
-        def_node_matcher :subject?, Subject::ALL.block_pattern
+        def_node_matcher :subject?, block_pattern('#rspec_subjects')
 
         def rspec_language_for(*keys)
           rspec_language_config.dig(*keys).to_a.map(&:to_sym)

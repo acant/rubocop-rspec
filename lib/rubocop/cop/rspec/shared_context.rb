@@ -59,14 +59,26 @@ module RuboCop
         MSG_CONTEXT  = "Use `shared_context` when you don't "\
                        'define examples.'
 
-        examples = (Examples::ALL + Includes::EXAMPLES)
-        def_node_search :examples?, examples.send_pattern
+        def_node_search :examples?,
+                        send_pattern(
+                          '{#rspec_example_includes #rspec_all_examples}'
+                        )
 
-        context = (Hooks::ALL + Helpers::ALL + Includes::CONTEXT + Subject::ALL)
-        def_node_search :context?, context.send_pattern
+        def_node_search :context?, <<-PATTERN
+          (
+            send #rspec? {
+              #rspec_subjects
+              #rspec_helpers
+              #rspec_context_includes
+              #rspec_hooks
+            } ...
+          )
+        PATTERN
 
-        def_node_matcher :shared_context, SharedGroups::CONTEXT.block_pattern
-        def_node_matcher :shared_example, SharedGroups::EXAMPLES.block_pattern
+        def_node_matcher :shared_context,
+                         block_pattern('#rspec_context_shared_groups')
+        def_node_matcher :shared_example,
+                         block_pattern('#rspec_example_shared_groups')
 
         def on_block(node)
           context_with_only_examples(node) do
