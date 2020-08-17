@@ -42,7 +42,12 @@ module RuboCop
         def inside_example_scope?(node)
           return false if node.nil? || example_group?(node)
           return true if example?(node)
-          return RuboCop::RSpec::Hook.new(node).example? if hook?(node)
+
+          if hook?(node)
+            return RuboCop::RSpec::Hook
+                .new(node, rspec_language_config)
+                .example?
+          end
 
           inside_example_scope?(node.parent)
         end

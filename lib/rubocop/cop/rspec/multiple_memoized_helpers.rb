@@ -127,7 +127,9 @@ module RuboCop
         end
 
         def variable_nodes(node)
-          example_group = RuboCop::RSpec::ExampleGroup.new(node)
+          example_group =
+            RuboCop::RSpec::ExampleGroup.new(node, rspec_language_config)
+
           if allow_subject?
             example_group.lets
           else

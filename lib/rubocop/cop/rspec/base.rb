@@ -19,7 +19,6 @@ module RuboCop
       #   #     - '(?:^|/)test/'
       class Base < ::RuboCop::Cop::Base
         extend RuboCop::RSpec::Language
-        include RuboCop::RSpec::Language
         include RuboCop::RSpec::Language::NodePattern
 
         DEFAULT_CONFIGURATION =

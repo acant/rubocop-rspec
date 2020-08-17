@@ -4,12 +4,13 @@ module RuboCop
   module RSpec
     # Wrapper for RSpec DSL methods
     class Concept
-      include Language
+      extend Language
       include Language::NodePattern
       extend NodePattern::Macros
 
-      def initialize(node)
+      def initialize(node, rspec_language_config)
         @node = node
+        @rspec_language_config = rspec_language_config
       end
 
       def eql?(other)
@@ -28,7 +29,7 @@ module RuboCop
 
       protected
 
-      attr_reader :node
+      attr_reader :node, :rspec_language_config
     end
   end
 end

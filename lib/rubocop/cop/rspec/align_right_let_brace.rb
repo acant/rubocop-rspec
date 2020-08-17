@@ -29,9 +29,6 @@ module RuboCop
         def on_new_investigation
           return if processed_source.blank?
 
-          token_aligner =
-            RuboCop::RSpec::AlignLetBrace.new(processed_source.ast, :end)
-
           token_aligner.offending_tokens.each do |let|
             add_offense(let.loc.end) do |corrector|
               corrector.insert_before(
@@ -39,6 +36,16 @@ module RuboCop
               )
             end
           end
+        end
+
+        private
+
+        def token_aligner
+          RuboCop::RSpec::AlignLetBrace.new(
+            processed_source.ast,
+            :end,
+            rspec_language_config
+          )
         end
       end
     end

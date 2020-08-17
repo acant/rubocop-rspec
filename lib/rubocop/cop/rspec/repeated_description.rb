@@ -56,7 +56,7 @@ module RuboCop
         # Select examples in the current scope with repeated description strings
         def repeated_descriptions(node)
           grouped_examples =
-            RuboCop::RSpec::ExampleGroup.new(node)
+            RuboCop::RSpec::ExampleGroup.new(node, rspec_language_config)
               .examples
               .group_by { |example| example_signature(example) }
 

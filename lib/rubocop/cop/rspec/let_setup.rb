@@ -61,9 +61,10 @@ module RuboCop
         end
 
         def child_let_bang(node, &block)
-          RuboCop::RSpec::ExampleGroup.new(node).lets.each do |let|
-            let_bang(let, &block)
-          end
+          RuboCop::RSpec::ExampleGroup
+            .new(node, rspec_language_config)
+            .lets
+            .each { |let| let_bang(let, &block) }
         end
       end
     end
