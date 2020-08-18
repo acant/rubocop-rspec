@@ -70,6 +70,12 @@ module RuboCop
             .fetch('RSpec', DEFAULT_CONFIGURATION)
             .fetch('Patterns')
         end
+
+        def rspec_language_config
+          all_cops_config
+            .fetch('RSpec', DEFAULT_CONFIGURATION)
+            .fetch('Language')
+        end
       end
     end
   end

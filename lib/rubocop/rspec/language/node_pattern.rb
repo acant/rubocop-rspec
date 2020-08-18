@@ -6,6 +6,7 @@ module RuboCop
       # Common node matchers used for matching against the rspec DSL
       module NodePattern
         extend RuboCop::NodePattern::Macros
+        include RuboCop::RSpec::Language::Config
 
         def_node_matcher :rspec?, '{(const {nil? cbase} :RSpec) nil?}'
 
@@ -29,6 +30,29 @@ module RuboCop
                          Includes::ALL.send_or_block_or_block_pass_pattern
 
         def_node_matcher :subject?, Subject::ALL.block_pattern
+
+        def rspec_language_for(*keys)
+          rspec_language_config.dig(*keys).to_a.map(&:to_sym)
+        end
+
+        private
+
+        def rspec_all(keyword)
+          all_keywords.include?(keyword)
+        end
+
+        def all_keywords
+          @all_keywords ||= [
+            all_example_groups_keywords,
+            all_shared_groups_keywords,
+            all_examples_keywords,
+            hooks_keywords,
+            helpers_keywords,
+            subjects_keywords,
+            expectations_keywords,
+            runners_keywords
+          ].reduce(:+)
+        end
       end
     end
   end
