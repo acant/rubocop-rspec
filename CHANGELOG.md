@@ -5,6 +5,7 @@
 * Remove deprecated class `::RuboCop::Cop::RSpec::Cop`. ([@bquorning][])
 * Retire `RSpec/InvalidPredicateMatcher` cop. ([@pirj][])
 * Make RSpec language elements configurable. ([@sl4vr][])
+* Remove `CustomIncludeMethods` `RSpec/EmptyExampleGroup` option in favour of the new RSpec DSL configuration. ([@pirj][])
 
 ## 2.0.0.pre (2020-10-22)
 
