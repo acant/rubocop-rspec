@@ -23,7 +23,7 @@ module RuboCop
         MSG = 'Don\'t use `be` without an argument.'
 
         def_node_matcher :be_without_args, <<-PATTERN
-          (send _ #rspec_runners $(send nil? :be))
+          (send _ #rspec(:Runners) $(send nil? :be))
         PATTERN
 
         def on_send(node)

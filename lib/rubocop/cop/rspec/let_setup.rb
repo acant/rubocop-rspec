@@ -30,9 +30,9 @@ module RuboCop
 
         def_node_matcher :example_or_shared_group_or_including?,
                          block_pattern(
-                           '{#rspec_all_shared_groups '\
-                           '#rspec_all_example_groups '\
-                           '#rspec_all_includes}'
+                           '{#rspec(:SharedGroups) '\
+                           '#rspec(:ExampleGroups) '\
+                           '#rspec(:Includes)}'
                          )
 
         def_node_matcher :let_bang, <<-PATTERN

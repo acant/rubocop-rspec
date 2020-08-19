@@ -25,7 +25,7 @@ module RuboCop
 
         def_node_matcher :shared_examples,
                          send_pattern(
-                           '{#rspec_all_shared_groups #rspec_all_includes}'
+                           '{#rspec(:SharedGroups) #rspec(:Includes)}'
                          )
 
         def on_send(node)

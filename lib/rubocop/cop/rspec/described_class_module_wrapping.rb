@@ -23,7 +23,7 @@ module RuboCop
         MSG = 'Avoid opening modules and defining specs within them.'
 
         def_node_search :find_rspec_blocks,
-                        block_pattern('#rspec_all_example_groups')
+                        block_pattern('#rspec(:ExampleGroups)')
 
         def on_module(node)
           find_rspec_blocks(node) do

@@ -36,8 +36,8 @@ module RuboCop
 
         def_node_matcher :skippable?,
                          send_pattern(
-                           '{#rspec_regular_example_groups '\
-                           '#rspec_regular_examples}'
+                           '{#rspec(:ExampleGroups, :Regular) '\
+                           '#rspec(:Examples, :Regular)}'
                          )
 
         def_node_matcher :skipped_in_metadata?, <<-PATTERN
@@ -51,9 +51,9 @@ module RuboCop
 
         def_node_matcher :pending_block?,
                          send_pattern(
-                           '{#rspec_skipped_example_groups '\
-                           '#rspec_pending_examples '\
-                           '#rspec_skipped_examples}'
+                           '{#rspec(:ExampleGroups, :Skipped) '\
+                           '#rspec(:Examples, :Skipped) '\
+                           '#rspec(:Examples, :Pending)}'
                          )
 
         def on_send(node)

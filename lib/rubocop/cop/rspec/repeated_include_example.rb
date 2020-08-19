@@ -55,10 +55,10 @@ module RuboCop
         PATTERN
 
         def_node_matcher :include_examples?,
-                         send_pattern('#rspec_example_includes')
+                         send_pattern('#rspec(:Includes, :Example)')
 
         def_node_matcher :shared_examples_name, <<-PATTERN
-          (send _ #rspec_example_includes $_ ...)
+          (send _ #rspec(:Includes, :Example) $_ ...)
         PATTERN
 
         def on_begin(node)

@@ -65,10 +65,10 @@ module RuboCop
         EXPLICIT_MSG = 'Use `%<scope>p` for RSpec hooks.'
 
         def_node_matcher :scoped_block, <<-PATTERN
-          (block $(send _ #rspec_hooks (sym ${:each :example})) ...)
+          (block $(send _ #rspec(:Hooks) (sym ${:each :example})) ...)
         PATTERN
 
-        def_node_matcher :unscoped_block, '(block $(send _ #rspec_hooks) ...)'
+        def_node_matcher :unscoped_block, '(block $(send _ #rspec(:Hooks)) ...)'
 
         def on_block(node)
           hook(node) do |method_send, scope_name|

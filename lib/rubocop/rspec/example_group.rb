@@ -12,9 +12,9 @@ module RuboCop
       #
       def_node_matcher :scope_change?,
                        block_pattern(
-                         '{#rspec_all_shared_groups '\
-                         '#rspec_all_example_groups '\
-                         '#rspec_all_includes}'
+                         '{#rspec(:SharedGroups) '\
+                         '#rspec(:ExampleGroups) '\
+                         '#rspec(:Includes)}'
                        )
 
       def lets

@@ -23,8 +23,9 @@ module RuboCop
         MSG = 'Focused spec found.'
 
         def_node_matcher :focusable_selector?, <<-PATTERN
-          {#rspec_regular_example_groups #rspec_skipped_example_groups
-          #rspec_regular_examples #rspec_skipped_examples #rspec_pending_examples}
+          {#rspec(:ExampleGroups, :Regular) #rspec(:ExampleGroups, :Skipped)
+          #rspec(:Examples, :Regular) #rspec(:Examples, :Skipped)
+          #rspec(:Examples, :Pending)}
         PATTERN
 
         def_node_matcher :metadata, <<-PATTERN
@@ -34,8 +35,8 @@ module RuboCop
 
         def_node_matcher :focused_block?,
                          send_pattern(
-                           '{#rspec_focused_example_groups '\
-                           '#rspec_focused_examples}'
+                           '{#rspec(:ExampleGroups, :Focused) '\
+                           '#rspec(:Examples, :Focused)}'
                          )
 
         def on_send(node)

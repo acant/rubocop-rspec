@@ -46,10 +46,10 @@ module RuboCop
               'to reference it explicitly.'
 
         def_node_matcher :example_or_hook_block?,
-                         block_pattern('{#rspec_all_examples #rspec_hooks}')
+                         block_pattern('{#rspec(:Examples) #rspec(:Hooks)}')
 
         def_node_matcher :shared_example?,
-                         block_pattern('#rspec_example_shared_groups')
+                         block_pattern('#rspec(:SharedGroups, :Example)')
 
         def_node_search :subject_usage, '$(send nil? :subject)'
 

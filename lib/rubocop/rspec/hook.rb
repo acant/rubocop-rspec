@@ -44,7 +44,7 @@ module RuboCop
       private
 
       def valid_scope?(node)
-        node&.sym_type? && hook_scopes_keywords.include?(node.value)
+        node&.sym_type? && rspec_keywords(:HookScopes).include?(node.value)
       end
 
       def transform_metadata(meta)

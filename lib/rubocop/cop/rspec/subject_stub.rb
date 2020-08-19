@@ -66,7 +66,7 @@ module RuboCop
               (send nil? { :expect :allow } (send nil? {% :subject}))
               (send nil? :is_expected)
             }
-            #rspec_runners
+            #rspec(:Runners)
             #message_expectation_matcher?
           )
         PATTERN
