@@ -4,10 +4,9 @@ RSpec.describe RuboCop::RSpec::Hook, :config do
   include RuboCop::AST::Sexp
 
   let(:cop_class) { RuboCop::Cop::RSpec::Base }
-  let(:language_config) { cop.send(:rspec_language_config) }
 
   def hook(source)
-    described_class.new(parse_source(source).ast, language_config)
+    described_class.new(parse_source(source).ast, config)
   end
 
   it 'extracts name' do

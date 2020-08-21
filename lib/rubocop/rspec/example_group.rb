@@ -27,13 +27,13 @@ module RuboCop
 
       def examples
         find_all_in_scope(node, :example?).map do |node|
-          Example.new(node, rspec_language_config)
+          Example.new(node, config)
         end
       end
 
       def hooks
         find_all_in_scope(node, :hook?).map do |node|
-          Hook.new(node, rspec_language_config)
+          Hook.new(node, config)
         end
       end
 

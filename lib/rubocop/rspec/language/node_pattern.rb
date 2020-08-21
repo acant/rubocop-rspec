@@ -7,7 +7,6 @@ module RuboCop
       module NodePattern
         extend RuboCop::NodePattern::Macros
         extend RuboCop::RSpec::Language
-        include RuboCop::RSpec::Language::ConfigurableKeywords
 
         def_node_matcher :rspec?, '{(const {nil? cbase} :RSpec) nil?}'
 
@@ -44,6 +43,10 @@ module RuboCop
         def_node_matcher :subject?, block_pattern('#rspec(:Subjects)')
 
         private
+
+        def rspec_keywords(*keys)
+          config.send(RSpecConfig.keywords_method_name(*keys))
+        end
 
         def rspec(keyword, *keys)
           rspec_keywords(*keys).include?(keyword)

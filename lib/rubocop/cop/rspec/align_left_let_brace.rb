@@ -44,7 +44,7 @@ module RuboCop
           RuboCop::RSpec::AlignLetBrace.new(
             processed_source.ast,
             :begin,
-            rspec_language_config
+            config
           )
         end
       end

@@ -29,7 +29,7 @@ module RuboCop
         private
 
         def repeated_examples(node)
-          RuboCop::RSpec::ExampleGroup.new(node, rspec_language_config)
+          RuboCop::RSpec::ExampleGroup.new(node, config)
             .examples
             .group_by { |example| example_signature(example) }
             .values

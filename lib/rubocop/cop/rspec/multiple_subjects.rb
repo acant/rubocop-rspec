@@ -42,9 +42,7 @@ module RuboCop
         def on_block(node)
           return unless example_group?(node)
 
-          subjects = RuboCop::RSpec::ExampleGroup
-            .new(node, rspec_language_config)
-            .subjects
+          subjects = RuboCop::RSpec::ExampleGroup.new(node, config).subjects
 
           subjects[0...-1].each do |subject|
             add_offense(subject) do |corrector|

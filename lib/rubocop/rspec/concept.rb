@@ -8,9 +8,9 @@ module RuboCop
       include Language::NodePattern
       extend NodePattern::Macros
 
-      def initialize(node, rspec_language_config)
+      def initialize(node, config)
         @node = node
-        @rspec_language_config = rspec_language_config
+        @config = config
       end
 
       def eql?(other)
@@ -29,7 +29,7 @@ module RuboCop
 
       protected
 
-      attr_reader :node, :rspec_language_config
+      attr_reader :node, :config
     end
   end
 end

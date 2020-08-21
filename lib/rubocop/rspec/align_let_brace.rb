@@ -6,10 +6,10 @@ module RuboCop
     class AlignLetBrace
       include RuboCop::RSpec::Language::NodePattern
 
-      def initialize(root, token, rspec_language_config)
+      def initialize(root, token, config)
         @root  = root
         @token = token
-        @rspec_language_config = rspec_language_config
+        @config = config
       end
 
       def offending_tokens
@@ -57,7 +57,7 @@ module RuboCop
           end
       end
 
-      attr_reader :root, :token, :rspec_language_config
+      attr_reader :root, :token, :config
     end
   end
 end

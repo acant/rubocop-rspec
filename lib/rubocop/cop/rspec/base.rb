@@ -21,14 +21,6 @@ module RuboCop
         extend RuboCop::RSpec::Language
         include RuboCop::RSpec::Language::NodePattern
 
-        DEFAULT_CONFIGURATION =
-          RuboCop::RSpec::CONFIG.fetch('AllCops').fetch('RSpec')
-
-        DEFAULT_PATTERN_RE = Regexp.union(
-          DEFAULT_CONFIGURATION.fetch('Patterns')
-                               .map(&Regexp.public_method(:new))
-        )
-
         exclude_from_registry
 
         # Invoke the original inherited hook so our cops are recognized
@@ -43,20 +35,7 @@ module RuboCop
         private
 
         def relevant_rubocop_rspec_file?(file)
-          rspec_pattern.match?(file)
-        end
-
-        def rspec_pattern
-          if rspec_pattern_config?
-            Regexp.union(rspec_pattern_config.map(&Regexp.public_method(:new)))
-          else
-            DEFAULT_PATTERN_RE
-          end
-        end
-
-        def all_cops_config
-          config
-            .for_all_cops
+          config.rspec_pattern.match?(file)
         end
 
         def rspec_pattern_config?
@@ -69,12 +48,6 @@ module RuboCop
           all_cops_config
             .fetch('RSpec', DEFAULT_CONFIGURATION)
             .fetch('Patterns')
-        end
-
-        def rspec_language_config
-          all_cops_config
-            .fetch('RSpec', DEFAULT_CONFIGURATION)
-            .fetch('Language')
         end
       end
     end

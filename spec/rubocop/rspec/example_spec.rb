@@ -4,10 +4,9 @@ RSpec.describe RuboCop::RSpec::Example, :config do
   include RuboCop::AST::Sexp
 
   let(:cop_class) { RuboCop::Cop::RSpec::Base }
-  let(:language_config) { cop.send(:rspec_language_config) }
 
   def example(source)
-    described_class.new(parse_source(source).ast, language_config)
+    described_class.new(parse_source(source).ast, config)
   end
 
   it 'extracts doc string' do
@@ -51,7 +50,7 @@ RSpec.describe RuboCop::RSpec::Example, :config do
 
   it 'returns node' do
     node = s(:sym, :node)
-    expect(described_class.new(node, language_config).to_node).to be(node)
+    expect(described_class.new(node, config).to_node).to be(node)
   end
 
   describe 'value object semantics' do
@@ -73,7 +72,7 @@ RSpec.describe RuboCop::RSpec::Example, :config do
     it 'computes #hash based on class and node' do
       node = s(:node)
 
-      expect(described_class.new(node, language_config).hash)
+      expect(described_class.new(node, config).hash)
         .to eql([described_class, node].hash)
     end
   end

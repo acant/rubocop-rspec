@@ -8,10 +8,10 @@ require 'rubocop'
 require_relative 'rubocop/rspec'
 require_relative 'rubocop/rspec/version'
 require_relative 'rubocop/rspec/inject'
+require_relative 'rubocop/rspec/rspec_config'
 require_relative 'rubocop/rspec/node'
 require_relative 'rubocop/rspec/wording'
 require_relative 'rubocop/rspec/language'
-require_relative 'rubocop/rspec/language/configurable_keywords'
 require_relative 'rubocop/rspec/language/node_pattern'
 
 require_relative 'rubocop/cop/rspec/mixin/top_level_group'
@@ -31,6 +31,17 @@ require_relative 'rubocop/rspec/corrector/move_node'
 RuboCop::RSpec::Inject.defaults!
 
 require_relative 'rubocop/cop/rspec_cops'
+
+# Include memoized `rspec_keywords_...` methods into RuboCop::Config
+# to allow usage of `rspec_keywords` method and `rspec` matcher.
+# Also include `rspec_pattern` to make `relevant_rubocop_rspec_file?` method
+# of `RuboCop::Cop::RSpec::Base` work.
+
+module RuboCop
+  class Config # rubocop:disable Style/Documentation
+    include RuboCop::RSpec::RSpecConfig
+  end
+end
 
 # We have to register our autocorrect incompatibilies in RuboCop's cops as well
 # so we do not hit infinite loops
