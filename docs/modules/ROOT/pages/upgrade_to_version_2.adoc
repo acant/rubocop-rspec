@@ -7,7 +7,7 @@ In version 2.x:
 
  - `RSpec/InvalidPredicateMatcher` cop is removed
  - `CustomIncludeMethods` configuration option for `RSpec/EmptyExampleGroup` is removed
- - cop departments are nested for cops with a department that doesn't match the extension name (`Capybara`, `FactoryBot`, `Rails`)
+ - cop departments are nested for cops with a department that doesn’t match the extension name (`Capybara`, `FactoryBot`, `Rails`)
 
 [discrete]
 === Adjust the configuration of `RSpec/EmptyExampleGroup`
@@ -34,8 +34,8 @@ AllCops:
 
 RuboCop extensions had cops with clashing names and departments, e.g. both `rspec-rails` and `rubocop-rspec` had `Rails::HttpStatus` cops.
 To avoid issues, e.g. inability to disable just one of the cops, each extension now has its own uber-department.
-Expectedly, RuboCop RSpec's uber-department name is `RSpec`.
-Changes are only applied to cops that don't already have the department set to `RSpec`, i.e. `Capybara`, `FactoryBot` and `Rails`.
+Expectedly, RuboCop RSpec’s uber-department name is `RSpec`.
+Changes are only applied to cops that don’t already have the department set to `RSpec`, i.e. `Capybara`, `FactoryBot` and `Rails`.
 
 [source,yaml]
 ----
@@ -68,16 +68,16 @@ https://github.com/rubocop-hq/rubocop/pull/8490[Learn more about this change].
 
 == Custom Cop Update Guide
 
-Due to significant API changes custom cops will break.
+Due to significant API changes, custom cops may break.
 Here is the summary of the changes:
 
-1) The base class for cops is now `RuboCop::Cop::RSpec::Base` instead of `RuboCop::Cop::RSpec::Cop`.
+1. The base class for cops is now `RuboCop::Cop::RSpec::Base` instead of `RuboCop::Cop::RSpec::Cop`.
 
-2) `TopLevelDescribe` is replaced with a more generic `TopLevelGroup`.
+2. `TopLevelDescribe` is replaced with a more generic `TopLevelGroup`.
 
-3) `RuboCop::RSpec::Language` has been completely rewritten to support dynamic RSpec DSL aliases and negated matchers to fully support third-party libraries e.g. RSpec Rails, Pundit, Action Policy and many others.
+3. `RuboCop::RSpec::Language` has been completely rewritten to support dynamic RSpec DSL aliases and negated matchers to fully support third-party libraries such as RSpec Rails, Pundit, Action Policy and many others.
 
-4) RuboCop RSpec updated the dependency of RuboCop to 1.0+.
+4. RuboCop RSpec updated the dependency of RuboCop to 1.0+.
 
 Below are the necessary steps to update custom cops to work with `rubocop-rspec` version 2.x.
 
@@ -109,7 +109,7 @@ https://github.com/rubocop-hq/rubocop-rspec/pull/962[Example pull request].
 `TopLevelDescribe` was incomplete, had poor performance and did not distinguish between example groups and shared example groups.
 
 `TopLevelGroup` provides a similar interface, but instead of a single `on_top_level_describe` hook there are two, `on_top_level_example_group` and `on_top_level_group`.
-There's no need yet for `on_top_level_shared_group` for RuboCop core cops, but if your custom cop needs such a hook, please feel free to send a pull request.
+There’s no need yet for `on_top_level_shared_group` for RuboCop core cops, but if your custom cop needs such a hook, please feel free to send a pull request.
 
 Additionally, `single_top_level_describe?` is removed with no direct replacement.
 You may use `top_level_groups` query method instead, e.g. `top_level_groups.one?`.
@@ -142,8 +142,7 @@ def_node_search :examples?,
 
 # After
 def_node_search :examples?,
-                send_pattern(
-                  '{#rspec(:Includes, :Example) #rspec(:Examples)}')
+                send_pattern('{#rspec(:Includes, :Example) #rspec(:Examples)}')
 ----
 
 [source,ruby]
@@ -161,6 +160,6 @@ https://github.com/rubocop-hq/rubocop-rspec/pull/956[Pull request with more exam
 
 === Conform with RuboCop API Changes
 
-The parent project, RuboCop, have API changes.
-They won't result in cop breakages, however, it's recommended to update cops to use new APIs.
-Follow the https://docs.rubocop.org/rubocop/v1_upgrade_notes[RuboCop's core v1 update guide] to adjust custom cops' RuboCop Autocorrect API usage.
+The parent project, RuboCop, has API changes.
+While they won’t result in cop breakages, it is recommended to update cops to use new API’s.
+Follow the https://docs.rubocop.org/rubocop/v1_upgrade_notes[RuboCop v1 update guide] to adjust custom cops’ use of RuboCop’s auto-correction API.
